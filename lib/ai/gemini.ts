@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
-import { IAIService, MomentData, QuestionAnswer, cleanAIJsonData } from "./interface";
+import { IAIService, MomentData, QuestionAnswer, cleanAIJsonData, ReaderInteractionInput, InteractionAnswer } from "./interface";
 
 // Initialize the Google Gen AI SDK
 const getAI = () => {
@@ -127,6 +127,57 @@ export class GeminiService implements IAIService {
     } catch {
       console.error("Failed to parse Gemini JSON:", cleanedJson);
       throw new Error("Failed to generate valid answer from AI.");
+    }
+  }
+
+  async explainInteraction(input: ReaderInteractionInput): Promise<InteractionAnswer> {
+    const ai = getAI();
+    let type = "image";
+    if (input.mimeType === "application/pdf") {
+      type = "document";
+    }
+
+    let spatialContext = "The user has highlighted the entire page.";
+    if (input.highlightType !== 'full-page' && input.highlightRect) {
+      spatialContext = `The user has highlighted a specific region on the document using a ${input.highlightType}. The bounding box coordinates relative to the visible canvas are: X=${input.highlightRect.x}, Y=${input.highlightRect.y}, Width=${input.highlightRect.width}, Height=${input.highlightRect.height}. Focus your explanation specifically on the contents within or near this region.`;
+    }
+
+    const systemInstruction = `
+      You are an expert tutor answering a student's question based on a document or image they are viewing.
+      ${spatialContext}
+      
+      The student's prompt is: "${input.prompt}"
+
+      Provide a clear, conversational, and direct explanation. Do not ramble.
+      
+      You must return your response strictly as a JSON object with two fields:
+      1. "readableAnswer": A beautifully formatted human-readable explanation (using markdown if necessary) for the UI.
+      2. "ttsAnswer": An optimized version of the explanation to be read aloud by Text-to-Speech. In this version, drop complex symbols, equations, or formatting that cannot be spoken naturally. Write it exactly as a teacher would speak it.
+
+      Example output:
+      {
+        "readableAnswer": "The formula for the area of a circle is **A = πr²**.",
+        "ttsAnswer": "The formula for the area of a circle is A equals pi r squared."
+      }
+    `;
+
+    const response = await ai.interactions.create({
+      model: "gemini-2.5-flash",
+      input: [
+        { type: "text", text: systemInstruction },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        { type: type, uri: input.fileUrl, mime_type: input.mimeType } as any
+      ]
+    });
+
+    const responseText = response.output_text || "{}";
+    const cleanedJson = cleanAIJsonData(responseText);
+
+    try {
+      return JSON.parse(cleanedJson) as InteractionAnswer;
+    } catch {
+      console.error("Failed to parse Gemini JSON:", cleanedJson);
+      throw new Error("Failed to generate valid explanation from AI.");
     }
   }
 }

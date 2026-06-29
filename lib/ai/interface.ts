@@ -18,13 +18,28 @@ export interface MomentData {
 }
 
 export interface QuestionAnswer {
-  answer: string;
+  readableAnswer: string;
+  ttsAnswer: string;
   isDeferred: boolean;
+}
+
+export interface InteractionAnswer {
+  readableAnswer: string;
+  ttsAnswer: string;
+}
+
+export interface ReaderInteractionInput {
+  fileUrl: string;
+  mimeType: string;
+  prompt: string;
+  highlightRect?: { x: number; y: number; width: number; height: number };
+  highlightType?: 'free-form' | 'box' | 'full-page';
 }
 
 export interface IAIService {
   generateMoments(imageUrls: string[], context?: string): Promise<MomentData[]>;
   answerQuestion(question: string, context: string): Promise<QuestionAnswer>;
+  explainInteraction(input: ReaderInteractionInput): Promise<InteractionAnswer>;
 }
 
 /**
