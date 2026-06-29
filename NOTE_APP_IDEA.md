@@ -54,16 +54,15 @@ So we first upload the files and then pass the URLs to our backend. We will have
 
 ## 📱 Phase 2: The Progressive Web App & Interactive Reader
 
-**NOW LET'S CREATE ANOTHER VERSION OF THIS APP**, making it a progressive web app. Let's say that our landing page will be an actual full-on landing page and we will have 2 core sub-apps: 
-1. The one we have worked on so far - **the walkthrough app**.
-2. And then this one - **the interactive reader app**.
+**NOW LET'S CREATE ANOTHER VERSION OF THIS APP**, making it a progressive web app (PWA). I originally thought about React Native, but a fully progressive web app is the way to go—might even turn it into a TWA (Trusted Web Activity) later, but for now let's stick to PWA.
 
-Basically still the same aim but a bit of a difference:
-It will be a PDF and image viewer without the need to upload it. You will be able to open PDFs and images on it, we can have a "recently opened" and all that... but now I think it should be a mobile app. Yup, it'll be a mobile app with React Native.
+The core idea is basically your gallery but waiting for you to ask a question. So when you highlight something on the PDF or image, a textbox pops up for you to type what you want to ask, or for you to just say it—I believe Gemini can take audio input too.
 
-So the plan is that you can view PDFs and/or images that you select, but then it is still for study. What makes this special is that you have a **pen tool**. You can highlight anything and that basically asks AI to explain that part to you in a voice-like manner and then another one in written form. The distinction here is that they will basically have the same explanation but the voice-like is to listen to while the text-like is to read.
+These will not need "Moments" like the Walkthrough app. Each interaction will be stored separately and linked to a particular file ID or hash. I am not exactly sure how we will generate that hash, especially how we handle selecting something on one page and then another thing on another page... idempotency! Oh, we can just make sure we keep track of these things locally.
 
-Now back to the pen tool: you can highlight anything on the page (PDF / image) and what it will do is try to first get context from preceding and succeeding pages (if PDF) or surrounding images so that it can be fast and not use too much data. It will then generate a response based on that, giving the response in voice (TTS) and in text.
+**IndexedDB** will be heavily used to make sure the entire files are stored in "bundles" or "notebooks" (I'm not too sure of the terminology yet). You can add more things to the notebook/bundle and view all of them, and all this is happening locally. The only time the backend is hit is for questioning and getting responses—that is when we trigger a client-side upload and pass the context.
+
+Then about the prompt field: it will have a preset text "Explain". It will look like a button, but this is just for the user to avoid typing altogether. There will still be a send button, but the "Explain" button will basically just trigger the action without any extra text.
 
 So it is best as a guide and not a full-on tutor.  
 *All of a sudden I am getting the urge to convert these 2 projects into 1 web app...*
@@ -80,3 +79,13 @@ As the platform evolved, several premium features were implemented to ensure the
 4. **Non-Destructive Masking & Highlight Marker:** The masking system was updated so that once a concept is revealed, it stays visible, allowing the student to see the progression. Additionally, a dynamic "Highlight Marker" (SVG path) can animate over specific equations or notes the AI is currently talking about.
 5. **Infinite Lesson Extension:** Users can continuously add more pages to an existing lesson. The backend automatically fetches the conversational context from the previous moments so the AI can pick right up where it left off.
 6. **Premium Dark Mode:** Implemented a tailored "Chalkboard/Dark Slate" theme that preserves the textured dot-matrix background, avoiding cheap glassmorphism for a more focused, tactile mathematical aesthetic.
+
+
+
+
+What about not having those particular notebook/pdf in your own device
+And then being able to publish a notebook / share one with others
+Or having a link to a google drive or something and we are able to crawl that ot be displayed: not that it will all be downloaded at once, rather we can just view things on need and then the user can read/see it and then it will be business as usual - when the pdf/image has been pulled before we can store it locally / have a local map by its url.
+
+
+when a pdf is uploaded and no notebook title has been given, let it take the name of the pdf
