@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { X, AlertCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { useModal } from "@/components/providers/modal-provider";
 
 interface AlertModalProps {
