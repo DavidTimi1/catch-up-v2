@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Download } from "lucide-react";
+import { Download } from "@/components/icons";
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -55,10 +55,10 @@ export function PWAInstallPrompt() {
   return (
     <div className="bg-emerald-600/10 border border-emerald-500/20 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
       <div>
-        <h3 className="text-emerald-800 dark:text-emerald-300 font-bold">Install MathPace</h3>
+        <h3 className="text-emerald-800 dark:text-emerald-300 font-bold">Install Catchup</h3>
         <p className="text-sm text-emerald-700/80 dark:text-emerald-400/80">Get the full offline experience directly on your device.</p>
       </div>
-      <button 
+      <button
         onClick={handleInstallClick}
         className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-xl font-medium shadow-sm transition-all"
       >

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { X, ExternalLink } from "lucide-react";
+import { X, ExternalLink } from "@/components/icons";
 import { Interaction } from "@/lib/db/localReaderDb";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/components/providers/modal-provider";

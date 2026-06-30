@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { UploadCloud, Loader2, X, FileText } from "lucide-react";
+import { UploadCloud, Loader2, X, FileText } from "@/components/icons";
 import { useModal } from "@/components/providers/modal-provider";
 import { uploadFilesToCloudinary } from "@/lib/uploadClient";
 import { saveFileToCache } from "@/lib/localCache";

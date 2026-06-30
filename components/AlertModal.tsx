@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { AlertOctagon } from "lucide-react";
+import { AlertOctagon } from "@/components/icons";
 import { useModal } from "@/components/providers/modal-provider";
 
 interface AlertModalProps {
@@ -22,7 +22,7 @@ export function AlertModal({ title = "Attention", message }: AlertModalProps) {
         </div>
       </div>
 
-      <h2 className="text-2xl font-heading font-black text-stone-900 dark:text-stone-100 mb-3 tracking-tight">{title}</h2>
+      <h2 className="text-2xl font-heading font-black mb-3 tracking-tight">{title}</h2>
       <p className="text-stone-600 dark:text-stone-400 text-sm leading-relaxed mb-8 px-4 font-medium">{message}</p>
 
       <Button

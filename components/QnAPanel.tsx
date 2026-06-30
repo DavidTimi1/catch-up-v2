@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2 } from "@/components/icons";
 
 interface QnAPanelProps {
   lessonId: string;

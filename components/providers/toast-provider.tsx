@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, CheckCircle2, AlertCircle, Info } from "lucide-react";
+import { X, CheckCircle2, AlertCircle, Info } from "@/components/icons";
 
 export type ToastType = "success" | "error" | "info";
 

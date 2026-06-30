@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { Volume2, VolumeX, Play, Pause } from "lucide-react";
+import { Volume2, VolumeX, Play, Pause } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 
 interface TTSControllerProps {

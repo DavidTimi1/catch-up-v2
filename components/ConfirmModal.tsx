@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { HelpCircle, Loader2 } from "lucide-react";
+import { HelpCircle, Loader2 } from "@/components/icons";
 import { useModal } from "@/components/providers/modal-provider";
 
 interface ConfirmModalProps {

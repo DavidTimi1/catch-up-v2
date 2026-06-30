@@ -6,7 +6,7 @@ import { TTSController } from "./TTSController";
 import { QnAPanel } from "./QnAPanel";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Loader2, Info, Share2, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, Info, Share2, Plus } from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { useModal } from "@/components/providers/modal-provider";
 import { ExtendLessonModal } from "./ExtendLessonModal";
