@@ -3,7 +3,7 @@
 import { useState, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Plus, Book, Trash2, ArrowLeft, Loader2, Library, Clock, Sparkles } from "lucide-react";
+import { Plus, Book, Trash2, ArrowLeft, Loader2, Library, Clock, Sparkles } from "@/components/icons";
 import { motion } from "framer-motion";
 import { createNotebook, addPage, deleteNotebook } from "@/lib/db/localReaderDb";
 import { useNotebooks } from "@/lib/hooks/useReaderData";
@@ -19,7 +19,7 @@ export default function ReaderGallery() {
   const { showModal } = useModal();
   const { toast } = useToast();
   const { data: notebooks, isLoading: loading, refetch: fetchNotebooks } = useNotebooks();
-  
+
   const [activeTab, setActiveTab] = useState<'library' | 'recent' | 'new'>('library');
   const [isProcessing, setIsProcessing] = useState(false);
   const fileFallbackRef = useRef<HTMLInputElement>(null);
@@ -28,7 +28,7 @@ export default function ReaderGallery() {
     e.stopPropagation();
     e.preventDefault();
     showModal(
-      <ConfirmModal 
+      <ConfirmModal
         title="Delete Notebook"
         message="Are you sure you want to delete this notebook? This action cannot be undone."
         confirmText="Delete"
@@ -37,14 +37,14 @@ export default function ReaderGallery() {
           toast("Notebook deleted", "success");
           fetchNotebooks();
         }}
-      />, 
+      />,
       "Confirm Deletion"
     );
   };
 
   const handleOpenFiles = async () => {
     if (isProcessing) return;
-    
+
     // Attempt File System Access API
     if ('showOpenFilePicker' in window) {
       try {
@@ -59,7 +59,7 @@ export default function ReaderGallery() {
             }
           }]
         });
-        
+
         setIsProcessing(true);
         const files: File[] = [];
         for (const handle of handles) {
@@ -96,7 +96,7 @@ export default function ReaderGallery() {
   const processAndCreateNotebook = async (files: File[]) => {
     try {
       toast(`Importing ${files.length} file(s)...`, "info");
-      
+
       // Auto-generate title
       let title = "New Notebook";
       if (files.length === 1) {
@@ -111,7 +111,7 @@ export default function ReaderGallery() {
         const file = files[i];
         await addPage(notebookId, file, file.type, i);
       }
-      
+
       toast("Notebook created successfully!", "success");
       router.push(`/reader/${notebookId}`);
     } catch (err) {
@@ -135,14 +135,14 @@ export default function ReaderGallery() {
   }, [notebooks, activeTab]);
 
   return (
-    <div className="flex h-screen bg-stone-50 dark:bg-stone-950 overflow-hidden font-sans">
-      <input 
-        type="file" 
-        multiple 
-        accept="image/*,application/pdf" 
-        ref={fileFallbackRef} 
-        onChange={handleFallbackFileSelect} 
-        className="hidden" 
+    <div className="flex h-screen overflow-hidden font-sans">
+      <input
+        type="file"
+        multiple
+        accept="image/*,application/pdf"
+        ref={fileFallbackRef}
+        onChange={handleFallbackFileSelect}
+        className="hidden"
       />
 
       {/* Desktop Sidebar */}
@@ -152,23 +152,23 @@ export default function ReaderGallery() {
             <ArrowLeft size={20} /> Back to Home
           </Link>
           <h1 className="text-3xl font-heading font-bold text-stone-900 dark:text-white tracking-tight">Library</h1>
-          <p className="text-stone-500 text-sm mt-1">MathPace Reader</p>
+          <p className="text-stone-500 text-sm mt-1">Catchup Reader</p>
         </div>
 
         <nav className="flex-1 p-4 space-y-2">
-          <button 
+          <button
             onClick={() => setActiveTab('library')}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'library' ? 'bg-emerald-600 text-white font-medium shadow-md' : 'hover:bg-stone-200 dark:hover:bg-stone-800 hover:text-stone-900 dark:hover:text-stone-100'}`}
           >
             <Library size={20} /> All Documents
           </button>
-          <button 
+          <button
             onClick={() => setActiveTab('recent')}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'recent' ? 'bg-emerald-600 text-white font-medium shadow-md' : 'hover:bg-stone-200 dark:hover:bg-stone-800 hover:text-stone-900 dark:hover:text-stone-100'}`}
           >
             <Clock size={20} /> Read Recently
           </button>
-          <button 
+          <button
             onClick={() => setActiveTab('new')}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'new' ? 'bg-emerald-600 text-white font-medium shadow-md' : 'hover:bg-stone-200 dark:hover:bg-stone-800 hover:text-stone-900 dark:hover:text-stone-100'}`}
           >
@@ -191,15 +191,15 @@ export default function ReaderGallery() {
             </Link>
             <h1 className="text-xl font-heading font-bold">Library</h1>
           </div>
-          <Button 
+          <Button
             onClick={handleOpenFiles}
             disabled={isProcessing}
             className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg h-9 px-4 text-sm"
           >
-            {isProcessing ? <Loader2 size={16} className="animate-spin" /> : <><Plus size={16} className="mr-1"/> Add</>}
+            {isProcessing ? <Loader2 size={16} className="animate-spin" /> : <><Plus size={16} className="mr-1" /> Add</>}
           </Button>
         </header>
-        
+
         {/* Mobile PWA Install */}
         <div className="md:hidden p-4 pb-0 shrink-0">
           <PWAInstallPrompt />
@@ -207,7 +207,7 @@ export default function ReaderGallery() {
 
         {/* Desktop Header Actions */}
         <div className="hidden md:flex justify-end p-8 pb-0 shrink-0">
-           <Button 
+          <Button
             onClick={handleOpenFiles}
             disabled={isProcessing}
             className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-12 px-6 rounded-xl shadow-md transition-all active:scale-[0.98] flex items-center gap-2"
@@ -260,7 +260,7 @@ export default function ReaderGallery() {
                       <p className="text-stone-400 dark:text-stone-500 text-xs md:text-sm mt-auto text-center md:text-left">
                         {new Date(activeTab === 'recent' ? (nb.lastOpenedAt || nb.createdAt) : nb.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                       </p>
-                      
+
                       <button
                         onClick={(e) => handleDelete(e, nb.id)}
                         className="absolute -top-2 -right-2 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-400 dark:text-stone-500 rounded-full p-2 shadow-md hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 hover:border-red-200 dark:hover:border-red-800 transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100"
@@ -278,21 +278,21 @@ export default function ReaderGallery() {
 
       {/* Mobile Bottom Navigation */}
       <nav className="md:hidden absolute bottom-0 left-0 right-0 bg-white dark:bg-stone-900 border-t border-stone-200 dark:border-stone-800 flex items-center justify-around pb-safe">
-        <button 
+        <button
           onClick={() => setActiveTab('library')}
           className={`flex-1 flex flex-col items-center justify-center py-3 gap-1 transition-colors ${activeTab === 'library' ? 'text-emerald-600' : 'text-stone-400 dark:text-stone-500'}`}
         >
           <Library size={20} />
           <span className="text-[10px] font-medium">Library</span>
         </button>
-        <button 
+        <button
           onClick={() => setActiveTab('recent')}
           className={`flex-1 flex flex-col items-center justify-center py-3 gap-1 transition-colors ${activeTab === 'recent' ? 'text-emerald-600' : 'text-stone-400 dark:text-stone-500'}`}
         >
           <Clock size={20} />
           <span className="text-[10px] font-medium">Recent</span>
         </button>
-        <button 
+        <button
           onClick={() => setActiveTab('new')}
           className={`flex-1 flex flex-col items-center justify-center py-3 gap-1 transition-colors ${activeTab === 'new' ? 'text-emerald-600' : 'text-stone-400 dark:text-stone-500'}`}
         >

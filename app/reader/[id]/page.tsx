@@ -2,10 +2,10 @@
 
 import { use, useEffect, useState, useRef, useMemo, useCallback } from "react";
 import Link from "next/link";
-import { ArrowLeft, Hand, PenTool, Send, ChevronLeft, ChevronRight, Sparkles, Loader2, History, X } from "lucide-react";
-import { 
-  ReaderPage, 
-  addInteraction, 
+import { ArrowLeft, Hand, PenTool, Send, ChevronLeft, ChevronRight, Sparkles, Loader2, History, X } from "@/components/icons";
+import {
+  ReaderPage,
+  addInteraction,
   updatePageUrl,
   updateLastOpened,
   updateNotebookTitle,
@@ -57,7 +57,7 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
   const pdfCanvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem('mathpace-highlight-type');
+    const saved = localStorage.getItem('Catchup-highlight-type');
     setTimeout(() => {
       if (saved && ['free-form', 'box', 'full-page'].includes(saved)) {
         setHighlightType(saved as 'free-form' | 'box' | 'full-page');
@@ -69,7 +69,7 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
 
   const handleSetHighlightType = (t: 'free-form' | 'box' | 'full-page') => {
     setHighlightType(t);
-    localStorage.setItem('mathpace-highlight-type', t);
+    localStorage.setItem('Catchup-highlight-type', t);
   };
 
   useEffect(() => {
@@ -105,7 +105,7 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
   };
 
   const currentPage = pages[currentIndex];
-  
+
   const previewUrl = useMemo(() => {
     if (!currentPage) return null;
     return URL.createObjectURL(currentPage.fileBlob);
@@ -207,8 +207,8 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
   const openInteractionPreview = (interaction: Interaction & { pageOrder: number }) => {
     if (showHistory) setShowHistory(false);
     showModal(
-      <InteractionPreviewModal 
-        interaction={interaction} 
+      <InteractionPreviewModal
+        interaction={interaction}
         onJumpToPage={(pageOrder) => {
           setCurrentIndex(pageOrder);
           setPdfCurrentPage(1);
@@ -224,9 +224,9 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
           <Link href="/reader" className="p-2 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-full mr-2 transition-colors shrink-0">
             <ArrowLeft size={20} />
           </Link>
-          
+
           {isEditingTitle ? (
-            <Input 
+            <Input
               value={titleInput}
               onChange={(e) => setTitleInput(e.target.value)}
               onBlur={handleTitleSave}
@@ -237,7 +237,7 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
           ) : isLoadingNotebook ? (
             <Skeleton className="h-6 w-32 md:w-48" />
           ) : (
-            <h1 
+            <h1
               onClick={() => setIsEditingTitle(true)}
               className="font-bold font-heading truncate max-w-[150px] sm:max-w-[250px] md:max-w-md cursor-text hover:text-emerald-400 transition-colors"
               title="Click to rename"
@@ -249,13 +249,13 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
 
         <div className="flex items-center gap-2">
           <div className="hidden sm:flex items-center bg-stone-100 dark:bg-stone-800 p-1 rounded-lg mr-2">
-            <button 
+            <button
               onClick={() => setMode('view')}
               className={`flex items-center gap-2 px-4 py-1.5 rounded-md transition-colors ${mode === 'view' ? 'bg-stone-200 dark:bg-stone-600 text-stone-900 dark:text-white' : 'text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'}`}
             >
               <Hand size={16} /> <span className="hidden sm:inline text-sm font-medium">View</span>
             </button>
-            <button 
+            <button
               onClick={() => setMode('draw')}
               className={`flex items-center gap-2 px-4 py-1.5 rounded-md transition-colors ${mode === 'draw' ? 'bg-emerald-600 text-white' : 'text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'}`}
             >
@@ -275,23 +275,23 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
       {/* Mobile Tools Action Bar */}
       <div className="sm:hidden flex items-center justify-between p-2 bg-white dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 shrink-0 z-20">
         <div className="flex bg-stone-100 dark:bg-stone-800 p-1 rounded-lg w-full max-w-[200px]">
-          <button 
+          <button
             onClick={() => setMode('view')}
             className={`flex-1 flex justify-center py-1.5 rounded-md transition-colors ${mode === 'view' ? 'bg-stone-200 dark:bg-stone-600 text-stone-900 dark:text-white' : 'text-stone-500 dark:text-stone-400'}`}
           >
             <Hand size={16} />
           </button>
-          <button 
+          <button
             onClick={() => setMode('draw')}
             className={`flex-1 flex justify-center py-1.5 rounded-md transition-colors ${mode === 'draw' ? 'bg-emerald-600 text-white' : 'text-stone-500 dark:text-stone-400'}`}
           >
             <PenTool size={16} />
           </button>
         </div>
-        
+
         {mode === 'draw' && (
-          <select 
-            value={highlightType} 
+          <select
+            value={highlightType}
             onChange={(e) => handleSetHighlightType(e.target.value as 'free-form' | 'box' | 'full-page')}
             className="bg-stone-800 border-none text-sm rounded-md py-1.5 px-2 outline-none cursor-pointer max-w-[120px]"
           >
@@ -303,20 +303,20 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
       </div>
 
       <div className="flex-1 flex relative overflow-hidden">
-        <main 
+        <main
           className="flex-1 relative overflow-hidden bg-stone-50 dark:bg-stone-900 flex justify-center h-full"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
           {mode === 'view' && (
             <>
-              <div 
-                className="absolute left-0 top-0 bottom-0 w-[15%] max-w-[80px] z-10 cursor-pointer hover:bg-white/5 transition-colors" 
-                onClick={handlePrev} 
+              <div
+                className="absolute left-0 top-0 bottom-0 w-[15%] max-w-[80px] z-10 cursor-pointer hover:bg-white/5 transition-colors"
+                onClick={handlePrev}
               />
-              <div 
-                className="absolute right-0 top-0 bottom-0 w-[15%] max-w-[80px] z-10 cursor-pointer hover:bg-white/5 transition-colors" 
-                onClick={handleNext} 
+              <div
+                className="absolute right-0 top-0 bottom-0 w-[15%] max-w-[80px] z-10 cursor-pointer hover:bg-white/5 transition-colors"
+                onClick={handleNext}
               />
             </>
           )}
@@ -329,32 +329,32 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
             <div className="relative w-full h-full shadow-2xl flex items-center justify-center bg-stone-100 dark:bg-stone-800">
               {currentPage.mimeType === "application/pdf" ? (
                 <div className="overflow-auto w-full h-full flex justify-center items-start p-4 relative">
-                   <div className="relative inline-block shadow-2xl">
-                     <canvas ref={pdfCanvasRef} className="bg-white block" />
-                     <HighlightCanvas 
-                       mode={mode} 
-                       highlightType={highlightType} 
-                       page={currentPage}
-                       subId={`pdf-${pdfCurrentPage}`}
-                       onInteractionComplete={loadHistory}
-                       getPdfBlob={async () => {
-                          return new Promise<Blob|null>(res => pdfCanvasRef.current?.toBlob(res, "image/jpeg", 0.9));
-                       }}
-                     />
-                   </div>
+                  <div className="relative inline-block shadow-2xl">
+                    <canvas ref={pdfCanvasRef} className="bg-white block" />
+                    <HighlightCanvas
+                      mode={mode}
+                      highlightType={highlightType}
+                      page={currentPage}
+                      subId={`pdf-${pdfCurrentPage}`}
+                      onInteractionComplete={loadHistory}
+                      getPdfBlob={async () => {
+                        return new Promise<Blob | null>(res => pdfCanvasRef.current?.toBlob(res, "image/jpeg", 0.9));
+                      }}
+                    />
+                  </div>
                 </div>
               ) : (
                 <div className="overflow-auto w-full h-full flex justify-center items-center p-4 relative">
-                   <div className="relative inline-block shadow-2xl">
-                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                     <img src={previewUrl} className="max-w-full max-h-[80vh] object-contain bg-white block" alt="Page preview" draggable={false} />
-                     <HighlightCanvas 
-                       mode={mode} 
-                       highlightType={highlightType} 
-                       page={currentPage}
-                       onInteractionComplete={loadHistory}
-                     />
-                   </div>
+                  <div className="relative inline-block shadow-2xl">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={previewUrl} className="max-w-full max-h-[80vh] object-contain bg-white block" alt="Page preview" draggable={false} />
+                    <HighlightCanvas
+                      mode={mode}
+                      highlightType={highlightType}
+                      page={currentPage}
+                      onInteractionComplete={loadHistory}
+                    />
+                  </div>
                 </div>
               )}
             </div>
@@ -366,14 +366,14 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
 
           {pages.length > 1 && (
             <>
-              <button 
+              <button
                 disabled={currentIndex === 0}
                 onClick={handlePrev}
                 className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-stone-800/80 hover:bg-stone-700 disabled:opacity-30 rounded-full backdrop-blur-md transition-all z-20 shadow-lg border border-stone-700"
               >
                 <ChevronLeft size={24} />
               </button>
-              <button 
+              <button
                 disabled={currentIndex === pages.length - 1}
                 onClick={handleNext}
                 className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-stone-800/80 hover:bg-stone-700 disabled:opacity-30 rounded-full backdrop-blur-md transition-all z-20 shadow-lg border border-stone-700"
@@ -385,9 +385,9 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
 
           {pdfDoc && pdfNumPages > 1 ? (
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-stone-800/90 px-4 py-2 rounded-full text-sm font-medium backdrop-blur-md border border-stone-700 z-20 shadow-xl pointer-events-auto">
-              <button disabled={pdfCurrentPage === 1} onClick={handlePrev} className="p-1 hover:text-white disabled:opacity-30"><ChevronLeft size={18}/></button>
+              <button disabled={pdfCurrentPage === 1} onClick={handlePrev} className="p-1 hover:text-white disabled:opacity-30"><ChevronLeft size={18} /></button>
               <span className="min-w-[80px] text-center">Page {pdfCurrentPage} of {pdfNumPages}</span>
-              <button disabled={pdfCurrentPage === pdfNumPages} onClick={handleNext} className="p-1 hover:text-white disabled:opacity-30"><ChevronRight size={18}/></button>
+              <button disabled={pdfCurrentPage === pdfNumPages} onClick={handleNext} className="p-1 hover:text-white disabled:opacity-30"><ChevronRight size={18} /></button>
             </div>
           ) : pages.length > 0 ? (
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-stone-800/80 px-4 py-1.5 rounded-full text-xs font-medium tracking-wider backdrop-blur-md border border-stone-700 z-20">
@@ -416,8 +416,8 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
                 <p className="text-stone-500 text-sm text-center mt-10">No interactions recorded yet.</p>
               ) : (
                 historyItems.map(item => (
-                  <div 
-                    key={item.id} 
+                  <div
+                    key={item.id}
                     onClick={() => openInteractionPreview(item)}
                     className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-3 rounded-xl hover:border-emerald-500/50 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors cursor-pointer group shadow-sm"
                   >
@@ -458,8 +458,8 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
                   <p className="text-stone-500 text-sm text-center mt-10">No interactions yet.</p>
                 ) : (
                   historyItems.map(item => (
-                    <div 
-                      key={item.id} 
+                    <div
+                      key={item.id}
                       onClick={() => openInteractionPreview(item)}
                       className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-3 rounded-xl hover:border-emerald-500/50 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors cursor-pointer shadow-sm"
                     >
@@ -477,20 +477,20 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
   );
 }
 
-function HighlightCanvas({ mode, highlightType, page, subId, getPdfBlob, onInteractionComplete }: { mode: 'view' | 'draw', highlightType: 'free-form' | 'box' | 'full-page', page: ReaderPage, subId?: string, getPdfBlob?: () => Promise<Blob|null>, onInteractionComplete?: () => void }) {
+function HighlightCanvas({ mode, highlightType, page, subId, getPdfBlob, onInteractionComplete }: { mode: 'view' | 'draw', highlightType: 'free-form' | 'box' | 'full-page', page: ReaderPage, subId?: string, getPdfBlob?: () => Promise<Blob | null>, onInteractionComplete?: () => void }) {
   const { showModal } = useModal();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  
-  const [rect, setRect] = useState<{x: number, y: number, w: number, h: number} | null>(null);
-  const [path, setPath] = useState<{x: number, y: number}[]>([]);
-  
+
+  const [rect, setRect] = useState<{ x: number, y: number, w: number, h: number } | null>(null);
+  const [path, setPath] = useState<{ x: number, y: number }[]>([]);
+
   const [showPrompt, setShowPrompt] = useState(false);
   const [promptPos, setPromptPos] = useState({ x: 0, y: 0 });
   const [canvasSize, setCanvasSize] = useState({ width: 500, height: 500 });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [latestAnswer, setLatestAnswer] = useState<{readableAnswer: string, ttsAnswer: string} | null>(null);
+  const [latestAnswer, setLatestAnswer] = useState<{ readableAnswer: string, ttsAnswer: string } | null>(null);
 
   const clearCanvas = useCallback(() => {
     const canvas = canvasRef.current;
@@ -514,7 +514,7 @@ function HighlightCanvas({ mode, highlightType, page, subId, getPdfBlob, onInter
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    
+
     clearCanvas();
     ctx.fillStyle = 'rgba(16, 185, 129, 0.2)';
     ctx.strokeStyle = '#10b981';
@@ -541,7 +541,7 @@ function HighlightCanvas({ mode, highlightType, page, subId, getPdfBlob, onInter
     const rect = canvas.getBoundingClientRect();
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
     const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-    
+
     const x = clientX - rect.left;
     const y = clientY - rect.top;
 
@@ -550,7 +550,7 @@ function HighlightCanvas({ mode, highlightType, page, subId, getPdfBlob, onInter
     if (highlightType === 'box') {
       setRect({ x, y, w: 0, h: 0 });
     } else {
-      setPath([{x, y}]);
+      setPath([{ x, y }]);
       clearCanvas();
     }
   };
@@ -562,7 +562,7 @@ function HighlightCanvas({ mode, highlightType, page, subId, getPdfBlob, onInter
     const canvasRect = canvas.getBoundingClientRect();
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
     const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-    
+
     const x = clientX - canvasRect.left;
     const y = clientY - canvasRect.top;
 
@@ -571,9 +571,9 @@ function HighlightCanvas({ mode, highlightType, page, subId, getPdfBlob, onInter
       setRect(newRect);
       drawRect(newRect.x, newRect.y, newRect.w, newRect.h);
     } else if (highlightType === 'free-form') {
-      const newPath = [...path, {x, y}];
+      const newPath = [...path, { x, y }];
       setPath(newPath);
-      
+
       const ctx = canvas.getContext('2d');
       if (ctx) {
         clearCanvas();
@@ -594,7 +594,7 @@ function HighlightCanvas({ mode, highlightType, page, subId, getPdfBlob, onInter
   const endDraw = () => {
     if (!isDrawing) return;
     setIsDrawing(false);
-    
+
     let endX = 0;
     let endY = 0;
 
@@ -638,7 +638,7 @@ function HighlightCanvas({ mode, highlightType, page, subId, getPdfBlob, onInter
     try {
       let fileUrl = page.originalUrl;
       let sendMimeType = page.mimeType;
-      
+
       if (getPdfBlob) {
         const blob = await getPdfBlob();
         if (!blob) throw new Error("Could not extract PDF page");
@@ -684,7 +684,7 @@ function HighlightCanvas({ mode, highlightType, page, subId, getPdfBlob, onInter
 
       await addInteraction({
         pageId: page.id,
-        highlightRect: rect ? { x: rect.x, y: rect.y, width: rect.w, height: rect.h, type: highlightType } : { x:0, y:0, width:0, height:0, type: highlightType },
+        highlightRect: rect ? { x: rect.x, y: rect.y, width: rect.w, height: rect.h, type: highlightType } : { x: 0, y: 0, width: 0, height: 0, type: highlightType },
         prompt: query,
         readableAnswer: data.readableAnswer,
         ttsAnswer: data.ttsAnswer,
@@ -721,7 +721,7 @@ function HighlightCanvas({ mode, highlightType, page, subId, getPdfBlob, onInter
       {latestAnswer && (
         <div className="absolute top-4 left-1/2 -translate-x-1/2 z-40 bg-stone-900 border border-emerald-500/50 shadow-2xl rounded-xl p-4 w-11/12 max-w-2xl text-sm animate-in slide-in-from-top-4">
           <div className="flex items-center justify-between mb-2 pb-2 border-b border-stone-800">
-            <h4 className="font-bold text-emerald-400 flex items-center gap-2"><Sparkles size={16}/> AI Explanation</h4>
+            <h4 className="font-bold text-emerald-400 flex items-center gap-2"><Sparkles size={16} /> AI Explanation</h4>
             <div className="flex items-center gap-2">
               <TTSController textToSpeak={latestAnswer.ttsAnswer || latestAnswer.readableAnswer} />
               <button onClick={() => setLatestAnswer(null)} className="text-stone-500 hover:text-white">✕</button>
@@ -732,23 +732,23 @@ function HighlightCanvas({ mode, highlightType, page, subId, getPdfBlob, onInter
       )}
 
       {showPrompt && mode === 'draw' && !isSubmitting && (
-        <div 
+        <div
           className="absolute z-30 bg-stone-900 border border-stone-700 shadow-2xl rounded-2xl p-4 w-72 flex flex-col gap-3 backdrop-blur-md animate-in zoom-in-95 duration-200"
           style={{
             left: Math.min(Math.max(10, promptPos.x), canvasSize.width - 290),
             top: Math.min(Math.max(10, promptPos.y), canvasSize.height - 150),
           }}
         >
-          <Button 
+          <Button
             className="w-full bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white border border-emerald-600/30"
             onClick={() => handleSubmit('explain')}
           >
             <Sparkles size={16} className="mr-2" /> Explain this
           </Button>
-          
+
           <div className="flex gap-2 items-center">
-            <Input 
-              placeholder="Ask a specific question..." 
+            <Input
+              placeholder="Ask a specific question..."
               value={promptText}
               onChange={e => setPromptText(e.target.value)}
               className="bg-stone-800 border-stone-700 text-stone-200 placeholder:text-stone-500 h-10"
