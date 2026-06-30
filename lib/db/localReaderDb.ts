@@ -4,6 +4,7 @@ export interface Notebook {
   id: string;
   title: string;
   createdAt: number;
+  lastOpenedAt?: number;
 }
 
 export interface ReaderPage {
@@ -67,7 +68,8 @@ export async function initReaderDB(): Promise<IDBPDatabase<ReaderDB>> {
 export async function createNotebook(title: string): Promise<string> {
   const db = await initReaderDB();
   const id = crypto.randomUUID();
-  await db.put('notebooks', { id, title, createdAt: Date.now() });
+  const now = Date.now();
+  await db.put('notebooks', { id, title, createdAt: now, lastOpenedAt: now });
   return id;
 }
 
@@ -80,6 +82,24 @@ export async function getNotebooks(): Promise<Notebook[]> {
 export async function getNotebook(id: string): Promise<Notebook | undefined> {
   const db = await initReaderDB();
   return db.get('notebooks', id);
+}
+
+export async function updateLastOpened(id: string): Promise<void> {
+  const db = await initReaderDB();
+  const notebook = await db.get('notebooks', id);
+  if (notebook) {
+    notebook.lastOpenedAt = Date.now();
+    await db.put('notebooks', notebook);
+  }
+}
+
+export async function updateNotebookTitle(id: string, title: string): Promise<void> {
+  const db = await initReaderDB();
+  const notebook = await db.get('notebooks', id);
+  if (notebook) {
+    notebook.title = title.trim();
+    await db.put('notebooks', notebook);
+  }
 }
 
 export async function deleteNotebook(id: string): Promise<void> {
@@ -150,4 +170,19 @@ export async function getInteractionsByPage(pageId: string): Promise<Interaction
   const db = await initReaderDB();
   const interactions = await db.getAllFromIndex('interactions', 'by-page', pageId);
   return interactions.sort((a, b) => a.createdAt - b.createdAt);
+}
+
+export async function getInteractionsByNotebook(notebookId: string): Promise<(Interaction & { pageOrder: number })[]> {
+  const db = await initReaderDB();
+  const pages = await getPagesByNotebook(notebookId);
+  const results: (Interaction & { pageOrder: number })[] = [];
+  
+  for (const page of pages) {
+    const interactions = await db.getAllFromIndex('interactions', 'by-page', page.id);
+    for (const inter of interactions) {
+      results.push({ ...inter, pageOrder: page.order });
+    }
+  }
+  
+  return results.sort((a, b) => b.createdAt - a.createdAt); // Newest first
 }
