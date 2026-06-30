@@ -1,23 +1,23 @@
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
-import { relations, sql } from 'drizzle-orm';
+import { pgTable, text, integer, timestamp } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
 
-export const lessons = sqliteTable('lessons', {
+export const lessons = pgTable('lessons', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
   title: text('title').notNull().default('Untitled Lesson'),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`),
-  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
-export const images = sqliteTable('images', {
+export const images = pgTable('images', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
   url: text('url').notNull(),
   publicId: text('public_id').notNull(),
   lessonId: text('lesson_id').notNull().references(() => lessons.id, { onDelete: 'cascade' }),
   order: integer('order').notNull(),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 
-export const moments = sqliteTable('moments', {
+export const moments = pgTable('moments', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
   lessonId: text('lesson_id').notNull().references(() => lessons.id, { onDelete: 'cascade' }),
   order: integer('order').notNull(),
@@ -27,7 +27,7 @@ export const moments = sqliteTable('moments', {
   explanation: text('explanation').notNull(),
   extraTitle: text('extra_title'),
   extraBody: text('extra_body'),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 
 export const lessonsRelations = relations(lessons, ({ many }) => ({

@@ -40,11 +40,11 @@ export async function POST(
 
     const momentsData = await withRetry(() => aiService.generateMoments(urls, context));
 
-    const result = db.transaction((tx) => {
+    const result = await db.transaction(async (tx) => {
       const startingImageOrder = lesson.images.length;
       const startingMomentOrder = lesson.moments.length;
 
-      const createdImages = tx.insert(imagesTable).values(
+      const createdImages = await tx.insert(imagesTable).values(
         uploadedFiles.map((img: { url: string, publicId: string }, index: number) => ({
           id: crypto.randomUUID(),
           url: img.url,
@@ -52,9 +52,9 @@ export async function POST(
           order: startingImageOrder + index,
           lessonId: lesson.id,
         }))
-      ).returning().all();
+      ).returning();
 
-      const createdMoments = tx.insert(moments).values(
+      const createdMoments = await tx.insert(moments).values(
         momentsData.map((mData, index) => {
           const dbImage = createdImages.find((img) => img.url === mData.imageId) || createdImages[0];
 
@@ -68,7 +68,7 @@ export async function POST(
             extraBody: mData.extraBody || null,
           };
         })
-      ).returning().all();
+      ).returning();
 
       return { momentsAdded: createdMoments.length };
     });

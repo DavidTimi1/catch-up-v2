@@ -1,15 +1,16 @@
-import { drizzle, BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
-import Database from 'better-sqlite3';
+import { drizzle, PostgresJsDatabase } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
 import * as schema from './db/schema';
 
 // Maintain a global singleton pattern
 const globalForDb = globalThis as unknown as {
-  db: BetterSQLite3Database<typeof schema> | undefined;
+  db: PostgresJsDatabase<typeof schema> | undefined;
 };
 
-const sqliteUrl = process.env.DATABASE_URL?.replace("file:", "") || "./dev.db";
+const pgUrl = process.env.DATABASE_URL || "postgres://localhost:5432/math_pace";
 
 // Instantiate the DB
-export const db = globalForDb.db ?? drizzle(new Database(sqliteUrl), { schema });
+const queryClient = postgres(pgUrl);
+export const db = globalForDb.db ?? drizzle(queryClient, { schema });
 
 if (process.env.NODE_ENV !== "production") globalForDb.db = db;

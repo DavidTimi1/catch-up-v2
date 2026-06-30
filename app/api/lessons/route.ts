@@ -20,13 +20,13 @@ export async function POST(req: Request) {
     const momentsData = await withRetry(() => aiService.generateMoments(urls));
 
     // Save to Database using Drizzle
-    const result = db.transaction((tx) => {
-      const [lesson] = tx.insert(lessons).values({
+    const result = await db.transaction(async (tx) => {
+      const [lesson] = await tx.insert(lessons).values({
         id: lessonId,
         title: title || "New Note Walkthrough",
-      }).returning().all();
+      }).returning();
 
-      const createdImages = tx.insert(imagesTable).values(
+      const createdImages = await tx.insert(imagesTable).values(
         uploadedFiles.map((img: { url: string, publicId: string }, index: number) => ({
           id: crypto.randomUUID(),
           url: img.url,
@@ -34,9 +34,9 @@ export async function POST(req: Request) {
           order: index,
           lessonId: lesson.id,
         }))
-      ).returning().all();
+      ).returning();
 
-      const createdMoments = tx.insert(moments).values(
+      const createdMoments = await tx.insert(moments).values(
         momentsData.map((mData, index) => {
           const dbImage = createdImages.find((img) => img.url === mData.imageId) || createdImages[0];
 
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
             extraBody: mData.extraBody || null,
           };
         })
-      ).returning().all();
+      ).returning();
 
       return { lessonId: lesson.id, momentsCount: createdMoments.length };
     });
