@@ -44,7 +44,7 @@ interface ReaderDB extends DBSchema {
   };
 }
 
-const DB_NAME = 'MathPaceReaderDB';
+const DB_NAME = 'CatchupReaderDB';
 
 export async function initReaderDB(): Promise<IDBPDatabase<ReaderDB>> {
   return openDB<ReaderDB>(DB_NAME, 1, {
@@ -105,18 +105,18 @@ export async function updateNotebookTitle(id: string, title: string): Promise<vo
 export async function deleteNotebook(id: string): Promise<void> {
   const db = await initReaderDB();
   const tx = db.transaction(['notebooks', 'pages', 'interactions'], 'readwrite');
-  
+
   // Delete the notebook
   await tx.objectStore('notebooks').delete(id);
-  
+
   // Delete associated pages and their interactions
   const pageStore = tx.objectStore('pages');
   const index = pageStore.index('by-notebook');
   const pages = await index.getAll(id);
-  
+
   for (const page of pages) {
     await pageStore.delete(page.id);
-    
+
     // We can also delete interactions manually or rely on the logic ignoring orphaned interactions
     // For completeness, we delete them:
     const interactionStore = tx.objectStore('interactions');
@@ -126,7 +126,7 @@ export async function deleteNotebook(id: string): Promise<void> {
       await interactionStore.delete(inter.id);
     }
   }
-  
+
   await tx.done;
 }
 
@@ -176,13 +176,13 @@ export async function getInteractionsByNotebook(notebookId: string): Promise<(In
   const db = await initReaderDB();
   const pages = await getPagesByNotebook(notebookId);
   const results: (Interaction & { pageOrder: number })[] = [];
-  
+
   for (const page of pages) {
     const interactions = await db.getAllFromIndex('interactions', 'by-page', page.id);
     for (const inter of interactions) {
       results.push({ ...inter, pageOrder: page.order });
     }
   }
-  
+
   return results.sort((a, b) => b.createdAt - a.createdAt); // Newest first
 }

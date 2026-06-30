@@ -1,4 +1,4 @@
-# MathPace 🚶‍♂️📖
+# Catchup 🚶‍♂️📖
 
 > Skipped classes? I got you. Turn those notes and PDFs into interactive tutoring sessions. 
 Built for myself but you can use too, don't mention... we don't do that here 😉 #studysmart
@@ -13,7 +13,7 @@ _Dive into the [Raw Thoughts & Origin Story (Notes App Idea)](./NOTE_APP_IDEA.md
 
 ## Overview
 
-Reading through raw class notes without a teacher's walkthrough can leave you struggling to understand the "why" behind the material. MathPace is an AI-powered educational Progressive Web Application (PWA) designed to transform static images and PDFs of handwritten notes into an interactive, logically ordered progression. By processing notes into sequenced "Moments," MathPace acts as a personal tutor, revealing information step-by-step with contextual explanations.
+Reading through raw class notes without a teacher's walkthrough can leave you struggling to understand the "why" behind the material. Catchup is an AI-powered educational Progressive Web Application (PWA) designed to transform static images and PDFs of handwritten notes into an interactive, logically ordered progression. By processing notes into sequenced "Moments," Catchup acts as a personal tutor, revealing information step-by-step with contextual explanations.
 
 ## Key Features
 
@@ -29,12 +29,12 @@ Reading through raw class notes without a teacher's walkthrough can leave you st
 
 ## Current Progress & Next Steps
 
-MathPace has rapidly evolved from a proof-of-concept into a robust, offline-capable platform.
+Catchup has rapidly evolved from a proof-of-concept into a robust, offline-capable platform.
 * ✅ **Client-Side Media Handling:** Migrated entirely to client-side Cloudinary uploads with unsigned presets, removing server-side file dependencies.
 * ✅ **Zero-Latency Caching:** Integrated IndexedDB to locally cache uploaded PDFs and images, enabling instantaneous loading for heavy files.
 * ✅ **Native PDF Support:** Fully integrated PDF parsing directly into the Google GenAI `Interactions API`. 
 * ✅ **Modular Modals:** A robust, single-source-of-truth global `ModalProvider` handles unified alerts, previews, and upload wizards.
-* 🚀 **Upcoming - Interactive Reader Mode:** Converting MathPace into a dual-mode PWA that includes an interactive PDF reader. This mode will feature a "pen tool" for highlighting arbitrary segments of a document to trigger localized AI TTS explanations.
+* 🚀 **Upcoming - Interactive Reader Mode:** Converting Catchup into a dual-mode PWA that includes an interactive PDF reader. This mode will feature a "pen tool" for highlighting arbitrary segments of a document to trigger localized AI TTS explanations.
 
 ## Tech Stack
 
@@ -47,7 +47,7 @@ MathPace has rapidly evolved from a proof-of-concept into a robust, offline-capa
 
 ## System Architecture & Flow
 
-MathPace operates on a state-driven progression model. The core logic relies on breaking down unstructured image/PDF data into a strictly typed array of `Moment` objects.
+Catchup operates on a state-driven progression model. The core logic relies on breaking down unstructured image/PDF data into a strictly typed array of `Moment` objects.
 
 1. **Ingestion & Processing:** Media files are uploaded to Cloudinary, and the URLs are fed to the Gemini API alongside context. Gemini returns a structured JSON payload of `Moments`.
 2. **State Hydration:** Each `Moment` contains the active media URI, the coordinate array for the obstruction polygons, the spoken text, and optional "learn more" metadata.
@@ -65,12 +65,12 @@ MathPace operates on a state-driven progression model. The core logic relies on 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/MathPace.git
+git clone https://github.com/yourusername/Catchup.git
 ```
 
 2. Navigate into the directory and install dependencies:
 ```bash
-cd MathPace
+cd Catchup
 npm install
 ```
 

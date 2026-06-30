@@ -1,6 +1,6 @@
 "use client";
 
-const DB_NAME = "mathPaceCache";
+const DB_NAME = "CatchupCache";
 const STORE_NAME = "files";
 const DB_VERSION = 1;
 

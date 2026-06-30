@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'MathPace',
-    short_name: 'MathPace',
+    name: 'Catchup',
+    short_name: 'Catchup',
     description: 'An AI-powered, distraction-free study platform.',
     start_url: '/',
     display: 'standalone',
