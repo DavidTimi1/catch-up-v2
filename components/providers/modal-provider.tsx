@@ -36,11 +36,11 @@ export function ModalProvider({ children }: { children: ReactNode }) {
     <ModalContext.Provider value={{ showModal, hideModal }}>
       {children}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-4xl bg-[#faf9f6] border-zinc-300 shadow-2xl overflow-hidden p-0 sm:rounded-xl">
+        <DialogContent showCloseButton={false} className="max-w-4xl bg-[#faf9f6] dark:bg-stone-950 border-zinc-300 dark:border-stone-800 shadow-2xl overflow-hidden p-0 sm:rounded-xl">
           {(modalTitle || modalDescription) && (
-            <DialogHeader className="p-4 border-b border-zinc-200">
-              {modalTitle && <DialogTitle className="font-heading text-xl">{modalTitle}</DialogTitle>}
-              {modalDescription && <DialogDescription className="font-sans">{modalDescription}</DialogDescription>}
+            <DialogHeader className="p-4 border-b border-zinc-200 dark:border-stone-800">
+              {modalTitle && <DialogTitle className="font-heading text-xl text-stone-900 dark:text-stone-100">{modalTitle}</DialogTitle>}
+              {modalDescription && <DialogDescription className="font-sans text-stone-500 dark:text-stone-400">{modalDescription}</DialogDescription>}
             </DialogHeader>
           )}
           {!modalTitle && (

@@ -35,25 +35,28 @@ export function ConfirmModal({
   };
 
   return (
-    <div className="w-full max-w-sm mx-auto flex flex-col items-center text-center">
-      <div className="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-4 mt-2">
-        <HelpCircle size={24} />
+    <div className="w-full max-w-sm mx-auto flex flex-col p-2">
+      <div className="flex items-start gap-4 mb-6">
+        <div className="w-12 h-12 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-2xl flex items-center justify-center shrink-0 shadow-inner">
+          <HelpCircle size={24} strokeWidth={2.5} />
+        </div>
+        <div className="flex-1 mt-1">
+          <h2 className="text-xl font-heading font-bold text-stone-900 dark:text-stone-100 mb-1">{title}</h2>
+          <p className="text-stone-500 dark:text-stone-400 text-sm leading-relaxed">{message}</p>
+        </div>
       </div>
 
-      <h2 className="text-xl font-heading font-bold text-stone-800 mb-2">{title}</h2>
-      <p className="text-stone-500 mb-6">{message}</p>
-
-      <div className="w-full flex gap-3">
+      <div className="w-full flex justify-end gap-3 pt-4 border-t border-stone-200 dark:border-stone-800">
         <Button
-          variant="outline"
-          className="flex-1 rounded-xl border-stone-200 text-stone-600"
+          variant="ghost"
+          className="rounded-xl text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800 font-medium px-6"
           onClick={hideModal}
           disabled={loading}
         >
           {cancelText}
         </Button>
         <Button
-          className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-all"
+          className="bg-amber-500 hover:bg-amber-600 text-amber-950 font-bold rounded-xl transition-all shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:shadow-[0_0_20px_rgba(245,158,11,0.4)] px-8"
           onClick={handleConfirm}
           disabled={loading}
         >
