@@ -1,15 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4f2e9; /* notebook paper color */
-  --foreground: #1c1917; /* dark pen ink */
+  --background: #f4f2e9;
+  /* notebook paper color */
+  --foreground: #1c1917;
+  /* dark pen ink */
   --dot-color: #d6d3d1;
+  color-scheme: light;
 }
 
-.dark {
-  --background: #1c1917; /* chalkboard / dark slate */
-  --foreground: #f4f2e9; /* chalk / light ink */
-  --dot-color: #292524; /* subtle dark dots */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1d1a18;
+    /* chalkboard / dark slate */
+    --foreground: #f4f2e9;
+    /* chalk / light ink */
+    --dot-color: #292524;
+    /* subtle dark dots */
+    color-scheme: dark;
+  }
 }
 
 @theme inline {
@@ -31,9 +40,11 @@ body {
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
+
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgba(150, 150, 150, 0.4);
   border-radius: 10px;

@@ -16,9 +16,28 @@ const kalam = Kalam({
   variable: "--font-kalam",
 });
 
+const SITEURL = process.env.NODE_ENV === 'development'? "http://localhost:3000" : process.env.NEXT_PUBLIC_SITEURL || "localhost:3000";
+
 export const metadata: Metadata = {
-  title: "Math Pace",
+  metadataBase: SITEURL,
+  title: "Catchup",
   description: "AI-powered note walkthroughs at your speed.",
+  icons: {
+    icon: "/icon.png",
+    apple: "/apple-icon.png"
+  },
+  openGraph: {
+    title: "Catchup",
+    description: "AI-powered note walkthroughs at your speed.",
+    siteName: "Catchup",
+    images: [{url: "/banner-image.png"}, {url: "/main-image.png"}]
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@davidtimi_1",
+    creator: "@davidtimi_1",
+    images: "/banner-image.png"
+  }
 };
 
 export default function RootLayout({
@@ -35,8 +54,8 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans text-stone-900 bg-transparent transition-colors">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
           enableSystem
+          enableColorScheme
           disableTransitionOnChange
         >
           <ToastProvider>
