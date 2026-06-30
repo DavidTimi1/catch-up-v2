@@ -7,9 +7,10 @@ import { saveFileToCache } from "@/lib/localCache";
 import { AlertModal } from "@/components/AlertModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { UploadCloud, Loader2, BookOpen, X, Calculator, Circle, Square, Infinity as InfinityIcon, FileText } from "lucide-react";
+import { UploadCloud, Loader2, X, Calculator, Circle, Square, InfinityIcon, FileText, ArrowLeft } from "@/components/icons";
 import { motion } from "framer-motion";
 import { useModal } from "@/components/providers/modal-provider";
+import Link from "next/link";
 
 export default function Home() {
   const router = useRouter();
@@ -103,6 +104,11 @@ export default function Home() {
         <Square className="absolute top-1/4 right-1/4 w-32 h-32 rotate-45" strokeWidth={0.5} />
         <InfinityIcon className="absolute bottom-1/4 left-1/4 w-56 h-56 -rotate-12" strokeWidth={0.5} />
       </div>
+      <div className="w-full flex justify-start">
+          <Link href="/" className="inline-flex items-center gap-2 text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-colors mb-6">
+            <ArrowLeft size={20} /> Back to Home
+          </Link>
+      </div>
 
       <motion.div 
         initial={{ y: 20, opacity: 0 }}
@@ -111,33 +117,32 @@ export default function Home() {
         className="w-full max-w-xl z-10"
       >
         <div className="text-center mb-10">
-          <div className="flex items-center justify-center gap-3 mb-2 text-stone-800">
-            <BookOpen size={48} strokeWidth={1.5} />
-            <h1 className="text-5xl md:text-6xl font-heading font-bold text-stone-800 tracking-tight">Math Pace</h1>
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <h1 className="text-5xl md:text-6xl font-heading font-bold tracking-tight">Walkthrough</h1>
           </div>
           <p className="text-stone-500 font-sans text-lg italic">Break down your calculations, step by step.</p>
         </div>
 
-        <div className="bg-white/90 backdrop-blur-sm border border-stone-200/60 shadow-xl rounded-2xl p-8">
+        <div className="bg-white/90 dark:bg-stone-900/90 backdrop-blur-sm border border-stone-200/60 dark:border-stone-800 shadow-xl rounded-2xl p-8">
           <div className="mb-8">
-            <h2 className="text-2xl font-heading font-bold text-stone-800 mb-2">New Note Walkthrough</h2>
-            <p className="text-stone-500 text-sm">Upload pictures of your notes or calculations. AI will process them into an interactive lesson.</p>
+            <h2 className="text-2xl font-heading font-bold text-stone-800 dark:text-stone-100 mb-2">New Note Walkthrough</h2>
+            <p className="text-stone-500 dark:text-stone-400 text-sm">Upload pictures of your notes or calculations. AI will process them into an interactive lesson.</p>
           </div>
 
           <div className="space-y-6">
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-700">Lesson Title</label>
+              <label className="text-sm font-bold text-stone-700 dark:text-stone-300">Lesson Title</label>
               <Input 
                 placeholder="e.g., Intro to Calculus - Week 3" 
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="bg-white border-stone-300 text-stone-800 placeholder:text-stone-400 focus-visible:ring-stone-400 rounded-lg shadow-sm h-12"
+                className="bg-white dark:bg-stone-950 border-stone-300 dark:border-stone-700 text-stone-800 dark:text-stone-100 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus-visible:ring-stone-400 dark:focus-visible:ring-stone-600 rounded-lg shadow-sm h-12"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-700">Upload Notes</label>
-              <div className="border-2 border-dashed border-stone-300 bg-stone-50/50 rounded-xl p-8 text-center hover:bg-stone-100 transition-colors cursor-pointer relative overflow-hidden group">
+              <label className="text-sm font-bold text-stone-700 dark:text-stone-300">Upload Notes</label>
+              <div className="border-2 border-dashed border-stone-300 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-950/50 rounded-xl p-8 text-center hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer relative overflow-hidden group">
                 <input 
                   type="file" 
                   multiple 
@@ -146,8 +151,8 @@ export default function Home() {
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
                 />
                 <div className="relative z-10 pointer-events-none">
-                  <UploadCloud className="mx-auto text-stone-400 mb-3 group-hover:text-stone-600 transition-colors" size={32} />
-                  <p className="text-sm font-medium text-stone-600">
+                  <UploadCloud className="mx-auto text-stone-400 dark:text-stone-500 mb-3 group-hover:text-stone-600 dark:group-hover:text-stone-300 transition-colors" size={32} />
+                  <p className="text-sm font-medium text-stone-600 dark:text-stone-400">
                     Click or drag images or PDFs here
                   </p>
                 </div>
@@ -158,19 +163,19 @@ export default function Home() {
                   {files.map((file, idx) => (
                     <div 
                       key={idx} 
-                      className="relative h-20 w-20 rounded-lg border border-stone-200 shadow-sm group cursor-pointer bg-white flex items-center justify-center overflow-hidden"
+                      className="relative h-20 w-20 rounded-lg border border-stone-200 dark:border-stone-700 shadow-sm group cursor-pointer bg-white dark:bg-stone-900 flex items-center justify-center overflow-hidden"
                       onClick={() => previewImage(file, previewUrls[idx])}
                     >
                       {file.type === "application/pdf" ? (
-                        <FileText className="text-stone-400" size={32} />
+                        <FileText className="text-stone-400 dark:text-stone-600" size={32} />
                       ) : (
                         /* eslint-disable-next-line @next/next/no-img-element */
                         <img src={previewUrls[idx]} alt="preview" className="h-full w-full object-cover transition-transform group-hover:scale-105" />
                       )}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors pointer-events-none" />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 dark:group-hover:bg-white/5 transition-colors pointer-events-none" />
                       <button
                         onClick={(e) => removeImage(idx, e)}
-                        className="absolute -top-2 -right-2 bg-white border border-stone-200 text-stone-500 rounded-full p-1 shadow-sm hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-colors opacity-0 group-hover:opacity-100 z-30"
+                        className="absolute -top-2 -right-2 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-500 dark:text-stone-400 rounded-full p-1 shadow-sm hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 hover:border-red-200 dark:hover:border-red-800 transition-colors opacity-0 group-hover:opacity-100 z-30"
                         title="Remove file"
                       >
                         <X size={14} strokeWidth={3} />
@@ -182,7 +187,7 @@ export default function Home() {
             </div>
 
             <Button 
-              className="w-full bg-stone-800 hover:bg-stone-900 text-white h-12 text-lg font-bold rounded-xl shadow-md mt-4 transition-all active:scale-[0.98]"
+              className="w-full bg-stone-800 dark:bg-stone-100 hover:bg-stone-900 dark:hover:bg-stone-200 text-white dark:text-stone-900 h-12 text-lg font-bold rounded-xl shadow-md mt-4 transition-all active:scale-[0.98]"
               onClick={handleStartLesson}
               disabled={loading || files.length === 0}
             >
