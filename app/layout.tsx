@@ -16,7 +16,7 @@ const kalam = Kalam({
   variable: "--font-kalam",
 });
 
-const SITEURL = process.env.NODE_ENV === 'development'? "http://localhost:3000" : process.env.NEXT_PUBLIC_SITEURL || "localhost:3000";
+const SITEURL = process.env.NODE_ENV === 'development'? "http://localhost:3000" : process.env.NEXT_PUBLIC_SITEURL || undefined;
 
 export const metadata: Metadata = {
   metadataBase: SITEURL,
