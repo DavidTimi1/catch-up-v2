@@ -4,6 +4,7 @@ import "./globals.css";
 import { ModalProvider } from "@/components/providers/modal-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ToastProvider } from "@/components/providers/toast-provider";
+import { OfflineBanner } from "@/components/OfflineBanner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -59,7 +60,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ToastProvider>
-            <ModalProvider>{children}</ModalProvider>
+            <ModalProvider>
+              <OfflineBanner />
+              {children}
+            </ModalProvider>
           </ToastProvider>
         </ThemeProvider>
       </body>

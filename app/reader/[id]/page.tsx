@@ -12,6 +12,7 @@ import {
   Interaction
 } from "@/lib/db/localReaderDb";
 import { useNotebook, usePages, useHistory } from "@/lib/hooks/useReaderData";
+import { useNetworkStatus } from "@/lib/hooks/useNetworkStatus";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -479,6 +480,7 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
 
 function HighlightCanvas({ mode, highlightType, page, subId, getPdfBlob, onInteractionComplete }: { mode: 'view' | 'draw', highlightType: 'free-form' | 'box' | 'full-page', page: ReaderPage, subId?: string, getPdfBlob?: () => Promise<Blob | null>, onInteractionComplete?: () => void }) {
   const { showModal } = useModal();
+  const isOnline = useNetworkStatus();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
 
@@ -740,21 +742,28 @@ function HighlightCanvas({ mode, highlightType, page, subId, getPdfBlob, onInter
           }}
         >
           <Button
-            className="w-full bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white border border-emerald-600/30"
+            className="w-full bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white border border-emerald-600/30 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={() => handleSubmit('explain')}
+            disabled={!isOnline}
           >
-            <Sparkles size={16} className="mr-2" /> Explain this
+            <Sparkles size={16} className="mr-2" /> {isOnline ? "Explain this" : "AI Unavailable Offline"}
           </Button>
 
           <div className="flex gap-2 items-center">
             <Input
-              placeholder="Ask a specific question..."
+              placeholder={isOnline ? "Ask a specific question..." : "Offline mode..."}
               value={promptText}
               onChange={e => setPromptText(e.target.value)}
-              className="bg-stone-800 border-stone-700 text-stone-200 placeholder:text-stone-500 h-10"
+              className="bg-stone-800 border-stone-700 text-stone-200 placeholder:text-stone-500 h-10 disabled:opacity-50"
               onKeyDown={e => { if (e.key === 'Enter') handleSubmit('ask') }}
+              disabled={!isOnline}
             />
-            <Button size="icon" className="shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white" onClick={() => handleSubmit('ask')}>
+            <Button 
+              size="icon" 
+              className="shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white disabled:opacity-50 disabled:cursor-not-allowed" 
+              onClick={() => handleSubmit('ask')}
+              disabled={!isOnline}
+            >
               <Send size={16} />
             </Button>
           </div>

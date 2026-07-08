@@ -55,6 +55,7 @@ export default function Home() {
       file.type === "application/pdf" ? (
         <iframe src={url} className="w-full h-[80vh] rounded-md border-0" />
       ) : (
+        /* eslint-disable-next-line @next/next/no-img-element */
         <img src={url} alt="Preview" className="max-w-full max-h-[80vh] object-contain rounded-md" />
       ),
       "File Preview"

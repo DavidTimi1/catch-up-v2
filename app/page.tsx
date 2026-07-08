@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Presentation, Sparkles } from "@/components/icons";
 import { motion } from "framer-motion";
 import { BrandLogo } from "@/components/BrandLogo";
-import Image from "next/image";
 
 export default function LandingPage() {
   return (
