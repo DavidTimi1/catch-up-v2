@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
 import { X, ExternalLink } from "@/components/icons";
 import { Interaction } from "@/lib/db/localReaderDb";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/components/providers/modal-provider";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface InteractionPreviewModalProps {
   interaction: Interaction & { pageOrder: number };
@@ -39,9 +40,9 @@ export function InteractionPreviewModal({ interaction, onJumpToPage }: Interacti
         <div>
           <h3 className="text-sm font-bold text-emerald-600 mb-3 uppercase tracking-wide">AI Explanation</h3>
           <div className="prose prose-stone dark:prose-invert max-w-none text-stone-700 dark:text-stone-300">
-            {interaction.readableAnswer.split('\n').map((line, i) => (
-              <p key={i} className="mb-2">{line}</p>
-            ))}
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {interaction.readableAnswer}
+            </ReactMarkdown>
           </div>
         </div>
       </div>

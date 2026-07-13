@@ -22,6 +22,8 @@ import { useModal } from "@/components/providers/modal-provider";
 import { useToast } from "@/components/providers/toast-provider";
 import { AlertModal } from "@/components/AlertModal";
 import { InteractionPreviewModal } from "@/components/InteractionPreviewModal";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import * as pdfjsLib from 'pdfjs-dist';
 
 if (typeof window !== 'undefined') {
@@ -426,7 +428,9 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
                       &quot;{item.prompt}&quot;
                     </p>
                     <p className="text-xs text-stone-500 line-clamp-2">
-                      {item.readableAnswer}
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {item.readableAnswer}
+                      </ReactMarkdown>
                     </p>
                     <p className="text-[10px] text-stone-600 font-bold uppercase tracking-wider mt-2">
                       Page {item.pageOrder + 1} • {new Date(item.createdAt).toLocaleDateString()}
@@ -729,7 +733,11 @@ function HighlightCanvas({ mode, highlightType, page, subId, getPdfBlob, onInter
               <button onClick={() => setLatestAnswer(null)} className="text-stone-500 hover:text-white">✕</button>
             </div>
           </div>
-          <div className="text-stone-300 leading-relaxed max-h-48 overflow-y-auto pr-2" dangerouslySetInnerHTML={{ __html: latestAnswer.readableAnswer.replace(/\n/g, '<br/>') }} />
+          <div className="text-stone-300 leading-relaxed max-h-48 overflow-y-auto pr-2">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {latestAnswer?.readableAnswer}
+            </ReactMarkdown>
+          </div>
         </div>
       )}
 

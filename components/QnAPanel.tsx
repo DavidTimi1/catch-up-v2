@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send, Loader2 } from "@/components/icons";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface QnAPanelProps {
   lessonId: string;
@@ -67,7 +69,11 @@ export function QnAPanel({ lessonId, currentMomentId }: QnAPanelProps) {
 
       {answer && (
         <div className="mt-4 p-4 bg-stone-50/90 dark:bg-stone-800/90 border border-stone-200 dark:border-stone-700 rounded-lg text-sm text-stone-800 dark:text-stone-200 relative z-10 shadow-sm">
-          <p className="font-sans leading-relaxed">{answer.text}</p>
+          <p className="font-sans leading-relaxed">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {answer.text}
+            </ReactMarkdown>
+          </p>
           
           {answer.isDeferred && (
             <div className="mt-3 pt-3 border-t border-stone-200 dark:border-stone-700">

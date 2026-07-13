@@ -11,6 +11,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useModal } from "@/components/providers/modal-provider";
 import { ExtendLessonModal } from "./ExtendLessonModal";
 import { getFileFromCache } from "@/lib/localCache";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export function LessonViewer({ lessonId }: { lessonId: string }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -202,7 +204,9 @@ export function LessonViewer({ lessonId }: { lessonId: string }) {
                   </div>
                   
                   <p className="text-lg text-stone-800 dark:text-stone-200 leading-relaxed relative z-10 font-sans">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
                     {currentMoment.explanation}
+                    </ReactMarkdown>
                   </p>
                 </div>
 
