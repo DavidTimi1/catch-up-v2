@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send, Loader2 } from "@/components/icons";
 import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 interface QnAPanelProps {
   lessonId: string;
@@ -57,8 +58,8 @@ export function QnAPanel({ lessonId, currentMomentId }: QnAPanelProps) {
             if (e.key === "Enter") askQuestion(false);
           }}
         />
-        <Button 
-          onClick={() => askQuestion(false)} 
+        <Button
+          onClick={() => askQuestion(false)}
           disabled={loading || !question.trim()}
           size="icon"
           className="bg-stone-800 dark:bg-stone-200 hover:bg-stone-900 dark:hover:bg-stone-300 text-white dark:text-stone-900 shrink-0"
@@ -70,17 +71,17 @@ export function QnAPanel({ lessonId, currentMomentId }: QnAPanelProps) {
       {answer && (
         <div className="mt-4 p-4 bg-stone-50/90 dark:bg-stone-800/90 border border-stone-200 dark:border-stone-700 rounded-lg text-sm text-stone-800 dark:text-stone-200 relative z-10 shadow-sm">
           <p className="font-sans leading-relaxed">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
               {answer.text}
             </ReactMarkdown>
           </p>
-          
+
           {answer.isDeferred && (
             <div className="mt-3 pt-3 border-t border-stone-200 dark:border-stone-700">
               <p className="text-xs text-stone-500 dark:text-stone-400 mb-2 font-bold">Want the answer right now anyway?</p>
-              <Button 
-                variant="outline" 
-                size="sm" 
+              <Button
+                variant="outline"
+                size="sm"
                 className="w-full text-xs border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700"
                 onClick={() => askQuestion(true)}
               >

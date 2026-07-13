@@ -23,7 +23,8 @@ import { useToast } from "@/components/providers/toast-provider";
 import { AlertModal } from "@/components/AlertModal";
 import { InteractionPreviewModal } from "@/components/InteractionPreviewModal";
 import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 import * as pdfjsLib from 'pdfjs-dist';
 
 if (typeof window !== 'undefined') {
@@ -428,7 +429,7 @@ export default function ReaderViewerPage({ params }: { params: Promise<{ id: str
                       &quot;{item.prompt}&quot;
                     </p>
                     <p className="text-xs text-stone-500 line-clamp-2">
-                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
                         {item.readableAnswer}
                       </ReactMarkdown>
                     </p>
@@ -734,7 +735,7 @@ function HighlightCanvas({ mode, highlightType, page, subId, getPdfBlob, onInter
             </div>
           </div>
           <div className="text-stone-300 leading-relaxed max-h-48 overflow-y-auto pr-2">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
               {latestAnswer?.readableAnswer}
             </ReactMarkdown>
           </div>
